@@ -204,6 +204,6 @@ int main(int argc, char **argv) {
     for (int i = 0;i < buffer.position-1;i++) {
         printf("%c",buffer.data[i]);
     }
-
+    free(buffer.data);
     return 0;
 }
