@@ -3,7 +3,6 @@
 #include <string.h>
 #include <stdio.h>
 
-#define VERSION "0.43"
 
 /*
  * This is free and unencumbered software released into the public domain.
@@ -33,6 +32,8 @@
  *
  */
 
+#define VERSION "0.43"
+
 typedef struct {
     int position;
     int size;
@@ -51,7 +52,7 @@ void reallocBuffer(Buffer *buffer) {
     buffer->size += 1024;
     buffer->data = realloc(buffer->data,buffer->size);
     if (!buffer->data) {
-        printf("Error reallocing buffer!");
+        printf("Error realloc-ing buffer!");
         exit(1);
     }
 }
@@ -85,7 +86,7 @@ int main(int argc, char **argv) {
     }
 
     Buffer buffer;
-        buffer.size     = 1024;
+    buffer.size     = 1024;
     buffer.data     = calloc(buffer.size,sizeof(char));
     buffer.position = 0;
 
@@ -154,6 +155,7 @@ int main(int argc, char **argv) {
                 appendToBuffer(&buffer,&(Buffer){0,5,"<ins>"});
                 close.Underline = true;
             }
+
         } else if (character == '[') {
             Buffer linkTxt = {0,256,calloc(256,sizeof(char))};
             Buffer linkLoc = {0,256,calloc(256,sizeof(char))};
