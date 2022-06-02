@@ -35,8 +35,8 @@
 #define VERSION "0.43"
 
 typedef struct {
-    int position;
-    int size;
+    size_t position;
+    size_t size;
     char *data;
 } Buffer;
 
@@ -58,7 +58,7 @@ void reallocBuffer(Buffer *buffer) {
 }
 
 void appendToBuffer(Buffer *buffer, Buffer *dataBuffer) {
-    for (int i = 0;i < dataBuffer->size;i++) {
+    for (size_t i = 0;i < dataBuffer->size;i++) {
         if (dataBuffer->data[i] == 0x00) break; /* stop on NULL */
         buffer->data[buffer->position] = dataBuffer->data[i];
         buffer->position++;
@@ -69,9 +69,10 @@ void appendToBuffer(Buffer *buffer, Buffer *dataBuffer) {
 }
 
 int main(int argc, char **argv) {
+    (void)argv;
 
     if (argc > 1) {
-        printf("Reeses static site generator V %s\n",VERSION);
+        printf("Reese's static site generator V %s\n",VERSION);
         printf("    Usage:\n");
         printf("        cat coolthing.txt | staticSiteGen > coolthing.html\n");
         printf("    Special characters:\n");
@@ -91,13 +92,15 @@ int main(int argc, char **argv) {
     buffer.position = 0;
 
     char character = 'a';
+    int  characterInt = 'a';
     bool skipChar = false;
 
     struct closeThings close;
 
-    while(character != EOF) {
+    while(characterInt != EOF) {
 
-        character = fgetc(stdin);
+        characterInt = fgetc(stdin);
+        character = (char)characterInt;
 
         if (buffer.position > buffer.size-64) {
             reallocBuffer(&buffer);
@@ -163,7 +166,7 @@ int main(int argc, char **argv) {
             appendToBuffer(&linkOut,&(Buffer){0,10,"<a href=\""});
 
             while (character != 0x00) {
-                character = fgetc(stdin);
+                character = (char)fgetc(stdin);
                 if (character == ']') break;
                 linkTxt.data[linkTxt.position] = character;
                 linkTxt.position++;
@@ -171,9 +174,9 @@ int main(int argc, char **argv) {
                     reallocBuffer(&linkTxt);
                 }
             }
-            character = fgetc(stdin); /* this remove the '(' */
+            character = (char)fgetc(stdin); /* this remove the '(' */
             while (character != 0x00) {
-                character = fgetc(stdin);
+                character = (char)fgetc(stdin);
                 if (character == ')') break;
                 linkLoc.data[linkLoc.position] = character;
                 linkLoc.position++;
@@ -201,7 +204,7 @@ int main(int argc, char **argv) {
         }
     }
 
-    for (int i = 0;i < buffer.position-1;i++) {
+    for (size_t i = 0;i < buffer.position-1;i++) {
         printf("%c",buffer.data[i]);
     }
     free(buffer.data);
