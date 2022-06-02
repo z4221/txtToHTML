@@ -1,0 +1,11 @@
+Hello world!
+
+[This is the archlinux website](https://archlinux.org)
+
+*bold*
+/italic/
+`monospace`
+~strikethrough~
+_underlined_
+*/~_all at once!_~/*
+\*asterisks\*
