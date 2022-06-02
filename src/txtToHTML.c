@@ -167,6 +167,9 @@ int main(int argc, char **argv) {
                 if (character == ']') break;
                 linkTxt.data[linkTxt.position] = character;
                 linkTxt.position++;
+                if (linkTxt.position > linkTxt.size-64) {
+                    reallocBuffer(&linkTxt);
+                }
             }
             character = fgetc(stdin); /* this remove the '(' */
             while (character != 0x00) {
@@ -174,6 +177,9 @@ int main(int argc, char **argv) {
                 if (character == ')') break;
                 linkLoc.data[linkLoc.position] = character;
                 linkLoc.position++;
+                if (linkLoc.position > linkLoc.size-64) {
+                    reallocBuffer(&linkLoc);
+                }
             }
 
             appendToBuffer(&linkOut,&linkLoc);
