@@ -32,7 +32,7 @@
  *
  */
 
-#define VERSION "0.43"
+#define VERSION "0.43" /* yes i pulled a number out of my hat please cope */
 
 typedef struct {
     size_t position;
@@ -69,7 +69,7 @@ void appendToBuffer(Buffer *buffer, Buffer *dataBuffer) {
 }
 
 int main(int argc, char **argv) {
-    (void)argv;
+    (void)argv; /* this stops it from yelling at me :) */
 
     if (argc > 1) {
         printf("Reese's static site generator V %s\n",VERSION);
@@ -87,7 +87,7 @@ int main(int argc, char **argv) {
     }
 
     Buffer buffer;
-    buffer.size     = 1024;
+    buffer.size     = 1024; /* initial size of the main output buffer */
     buffer.data     = calloc(buffer.size,sizeof(char));
     buffer.position = 0;
 
@@ -110,11 +110,11 @@ int main(int argc, char **argv) {
             skipChar = false;
             buffer.data[buffer.position] = character;
             buffer.position++;
-            continue;
-        } else if (character == '\\') {
+
+        } else if (character == '\\') { /* character escaping */
             skipChar = true;
 
-        } else if (character == '*') {
+        } else if (character == '*') { /* bold */
             if (close.Bold) {
                 appendToBuffer(&buffer,&(Buffer){0,4,"</b>"});
                 close.Bold = false;
@@ -123,7 +123,7 @@ int main(int argc, char **argv) {
                 close.Bold = true;
             }
 
-        } else if (character == '/') {
+        } else if (character == '/') { /* italics */
             if (close.Italics) {
                 appendToBuffer(&buffer,&(Buffer){0,4,"</i>"});
                 close.Italics = false;
@@ -132,7 +132,7 @@ int main(int argc, char **argv) {
                 close.Italics = true;
             }
 
-        } else if (character == '`') {
+        } else if (character == '`') { /* monospace */
             if (close.Monospace) {
                 appendToBuffer(&buffer,&(Buffer){0,7,"</code>"});
                 close.Monospace = false;
@@ -141,7 +141,7 @@ int main(int argc, char **argv) {
                 close.Monospace = true;
             }
 
-        } else if (character == '~') {
+        } else if (character == '~') { /* strikethrough */
                         if (close.Strikethrough) {
                 appendToBuffer(&buffer,&(Buffer){0,6,"</del>"});
                 close.Strikethrough = false;
@@ -150,7 +150,7 @@ int main(int argc, char **argv) {
                 close.Strikethrough = true;
             }
 
-        } else if (character == '_') {
+        } else if (character == '_') { /* underlined */
             if (close.Underline) {
                 appendToBuffer(&buffer,&(Buffer){0,6,"</ins>"});
                 close.Underline = false;
@@ -159,7 +159,7 @@ int main(int argc, char **argv) {
                 close.Underline = true;
             }
 
-        } else if (character == '[') {
+        } else if (character == '[') { /* markdown style links */
             Buffer linkTxt = {0,256,calloc(256,sizeof(char))};
             Buffer linkLoc = {0,256,calloc(256,sizeof(char))};
             Buffer linkOut = {0,256,calloc(256,sizeof(char))};
@@ -195,10 +195,10 @@ int main(int argc, char **argv) {
             free(linkTxt.data);
             free(linkLoc.data);
 
-        } else if (character == '\n') {
+        } else if (character == '\n') { /* convert newlines */
             appendToBuffer(&buffer,&(Buffer){0,5,"<br>\n"});
 
-        } else {
+        } else { /* it is a normal character append to buffer */
             buffer.data[buffer.position] = character;
             buffer.position++;
         }
