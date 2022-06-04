@@ -72,9 +72,9 @@ int main(int argc, char **argv) {
     (void)argv; /* this stops it from yelling at me :) */
 
     if (argc > 1) {
-        printf("Reese's static site generator V %s\n",VERSION);
+        printf("txtToHTML V %s\n",VERSION);
         printf("    Usage:\n");
-        printf("        cat coolthing.txt | staticSiteGen > coolthing.html\n");
+        printf("        cat coolthing.txt | txtToHTML > coolthing.html\n");
         printf("    Special characters:\n");
         printf("        * = bold\n");
         printf("        / = italic\n");
