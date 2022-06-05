@@ -62,7 +62,7 @@ void appendToBuffer(Buffer *buffer, Buffer *dataBuffer) {
         if (dataBuffer->data[i] == 0x00) break; /* stop on NULL */
         buffer->data[buffer->position] = dataBuffer->data[i];
         buffer->position++;
-        if (buffer->position > buffer->size-64) {
+        if ((buffer->position > buffer->size-64) || (buffer->size-64 > buffer->position)) {
             reallocBuffer(buffer);
         }
     }
